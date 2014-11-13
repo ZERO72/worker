@@ -1,10 +1,13 @@
 /* Worker File - LazyLoad - source: http://toddmotto.com/echo-js-simple-javascript-image-lazy-loading/ */
+var windowElement, documentEl;
 
 self.addEventListener('message', function(e){
-	self.postMessage(e.data);
+  windowElement = e.data.windowElement;
+  documentEl = e.data.documentEl;
+	self.postMessage(e.data.msg);
 }, false);
 
-window.echo = (function (window, document) {
+windowElement.echo = (function (windowElement, documentEl) {
 
   'use strict';
 
@@ -27,7 +30,7 @@ window.echo = (function (window, document) {
    */
   var scrolledIntoView = function (element) {
     var coords = element.getBoundingClientRect();
-    return ((coords.top >= 0 && coords.left >= 0 && coords.top) <= (window.innerHeight || document.documentElement.clientHeight));
+    return ((coords.top >= 0 && coords.left >= 0 && coords.top) <= (windowElement.innerHeight || documentEl.documentElement.clientHeight));
   };
 
   /*
@@ -69,23 +72,23 @@ window.echo = (function (window, document) {
       echoStore.push(this.elem);
     },
     render : function () {
-      if (document.addEventListener) {
-        document.addEventListener('DOMContentLoaded', echoImages, false);
+      if (documentEl.addEventListener) {
+        documentEl.addEventListener('DOMContentLoaded', echoImages, false);
       } else {
-        window.onload = echoImages;
+        windowElement.onload = echoImages;
       }
     },
     listen : function () {
-      window.onscroll = echoImages;
+      windowElement.onscroll = echoImages;
     }
   };
 
   /*
    * Initiate the plugin
    */
-  var lazyImgs = document.querySelectorAll('img[data-echo]');
+  var lazyImgs = documentEl.querySelectorAll('img[data-echo]');
   for (var i = 0; i < lazyImgs.length; i++) {
     new Echo(lazyImgs[i]).init();
   }
 
-})(window, document);
+})(windowElement, documentEl);
