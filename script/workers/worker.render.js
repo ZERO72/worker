@@ -1,68 +1,16 @@
-/* Main JS file for WebWorker Test */
 
 
-var pageIndex = 1;
+self.addEventListener('message', function(e) {
 
-var workerRender = new Worker('script/workers/worker.render.js');
+	var test = render.init(e.data);
 
-	workerRender.addEventListener('message', function(e) {
-
-	  			//console.log('WorkerRender said: ', e.data);
-
-	  			$('#content-box').append(e.data);
-				
-	}, false);
+  	
 
 
 
-
-$(document).ready(function() {
-
-
-	$('.btn-get').click(function() {
-
-		var kick = $(this).attr('data-kick');
-
-		data.getNext(kick);
-	});
+}, false);
 
 
-var data = {
-
-	init:function() {
-
-		// get data
-
-	},
-
-	getNext:function(kick) {
-
-		var randomnumber = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1;
-
-		var url = 'data/page'+pageIndex+'.json?var='+randomnumber;
-
-		jQuery.getJSON( url, function( data ) {
-
-			var posts = data.posts;
-
-			// TEST THESE TWO FUNCTIONS
-			if (kick == 'worker') {
-				workerRender.postMessage(posts);
-			} else {
-				render.init(posts);
-			}
-
-			if (pageIndex == 2 ) {
-				pageIndex = 1;
-			} else {
-				pageIndex++;
-			}
-
-		});
-
-	}
-
-}
 
 var render = {
 
@@ -71,7 +19,6 @@ var render = {
 		var self = this;
 
 		var outputted;
-
 		for ( var keys in data) {
 
 			var key = keys;
@@ -131,8 +78,10 @@ var render = {
 		};
 
 
+		postMessage(outputted);
+		//return outputted;
 
-		$('#content-box').append(outputted);
+
 
 
 	},
@@ -178,25 +127,3 @@ var render = {
 
 }
 
-
-
-
-});
-
-
-
-
-
-
-var workerAjaxCall = new Worker('script/workers/worker.ajaxcall.js');
-	
-	workerAjaxCall.addEventListener('message', function(e){
-		console.log("worker said: ", e.data);
-	}, false);
-
-	var data = {
-		"url" : "http://37.34.57.162/~mpdev/api/get_posts/?page=1",
- 		"msg" : "hello world"
-	};
-
-	workerAjaxCall.postMessage(data); // Start the worker.
