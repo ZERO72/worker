@@ -35,7 +35,7 @@ var workerAjaxCall = new Worker('script/workers/worker.ajaxcall.js');
 	}, false);
 
 	var data = {
-		"url" : "urletje",
+		"url" : "http://37.34.57.162/~mpdev/api/get_posts/?page=1",
  		"msg" : "hello world"
 	};
 
