@@ -16,6 +16,10 @@ var data = {
 		var url = '../data/page'+pageIndex+'.js';
 
 		jQuery.getJSON( url_json, function( data ) {
+
+			console.log(data);
+
+			pageIndex++;
 		
 
 		});
