@@ -7,14 +7,9 @@ $(document).ready(function() {
 
 
 	$('#btn-get').click(function() {
-		console.log('test');
 
 		data.getNext();
 	});
-
-
-
-
 
 
 var data = {
@@ -27,11 +22,11 @@ var data = {
 
 	getNext:function() {
 
-		var url = 'data/page'+pageIndex+'.js';
+		var randomnumber = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1;
+
+		var url = 'data/page'+pageIndex+'.js?var='+randomnumber;
 
 		jQuery.getJSON( url, function( data ) {
-
-		
 
 			var posts = data.posts;
 
@@ -42,10 +37,6 @@ var data = {
 			} else {
 				pageIndex++;
 			}
-			
-
-
-		
 
 		});
 
@@ -63,9 +54,8 @@ var render = {
 
 			var output = self.template(key,val);
 
-			console.log(output);
-
 			$('#content-box').append(output);
+			$('#content-box2').append(output);
 
 		});
 
@@ -109,9 +99,7 @@ var render = {
 
 		return img;
 
-
 	}
-
 
 
 }
